@@ -3,342 +3,492 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Carryer — the flight simulator for futures prop traders</title>
-<meta name="description" content="Train on unseen market days with real prop-firm evaluation rules enforced live. Trailing drawdown that ratchets, daily loss caps, targets — the real geometry, before it costs you a reset."/>
+<title>Carryer — The Flight Simulator for Futures Eval Traders</title>
+<meta name="description" content="Carryer is built for futures eval traders. Unseen sessions, real prop-firm rules, infinite reps. Master your craft. Make success inevitable."/>
+<link rel="icon" type="image/svg+xml" href="logo.svg"/>
 <style>
-:root{--bg:#0b0e13;--panel:#10141c;--panel2:#0d1118;--line:#202733;--txt:#e9edf4;--mut:#8b95a7;
-      --red:#e6455a;--grn:#26a69a;--dn:#ef5350;--gold:#f6c945;--blu:#5b9bd5;--vio:#b39ddb}
+:root{--bg:#070a10;--bg2:#0a0e16;--panel:#0e131d;--line:#1c2534;--txt:#eef3fb;--mut:#8f9aad;
+      --grn:#26e6a0;--red:#ff4d5e;--gold:#f2c94c;--vio:#b39ddb;--acc:#26e6a0}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6;overflow-x:hidden}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-a{color:inherit}
+body{background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.55;overflow-x:hidden}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+.mono{font-family:ui-monospace,"SFMono-Regular","Consolas",monospace}
+h2{font-size:clamp(26px,3.6vw,38px);font-weight:800;line-height:1.1;letter-spacing:-.5px}
+.eyebrow{font-size:11.5px;letter-spacing:3px;text-transform:uppercase;color:var(--acc);font-weight:800;margin-bottom:12px}
+section{padding:70px 0}
+.reveal{opacity:0;transform:translateY(18px);transition:.7s cubic-bezier(.2,.7,.3,1)}
+.reveal.in{opacity:1;transform:none}
 
-header{padding:22px 0;display:flex;align-items:center;gap:10px}
-.dot{width:13px;height:13px;border-radius:50%;background:var(--red);box-shadow:0 0 16px var(--red);animation:pulse 2.6s infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 8px var(--red)}50%{box-shadow:0 0 22px var(--red)}}
-.brand{font-weight:800;font-size:19px;letter-spacing:1.5px}
-.hcta{margin-left:auto;font-size:13.5px;color:var(--mut);text-decoration:none;border:1px solid var(--line);padding:7px 14px;border-radius:8px}
-.hcta:hover{color:var(--txt);border-color:#3a4556}
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(7,10,16,.84);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.navi{display:flex;align-items:center;gap:26px;height:62px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:2.5px;font-size:15px}
+.logo svg{width:24px;height:24px}
+.nlinks{display:flex;gap:22px;font-size:13.5px;color:var(--mut)}
+.nlinks a:hover{color:var(--txt)}
+.navcta{margin-left:auto;background:var(--acc);color:#03130c;font-weight:800;font-size:13px;padding:9px 18px;border-radius:8px}
+.navcta:hover{filter:brightness(1.1)}
+@media(max-width:760px){.nlinks{display:none}}
 
-.hero{display:grid;grid-template-columns:1.05fr 1.2fr;gap:38px;align-items:center;padding:44px 0 30px}
-@media(max-width:900px){.hero{grid-template-columns:1fr}}
-.tag{font-size:11.5px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;font-weight:700}
-h1{font-size:clamp(30px,4.6vw,46px);line-height:1.1;font-weight:800;margin:14px 0 0}
-h1 .r{color:var(--red)} h1 .g{color:var(--grn)}
-.sub{color:var(--mut);font-size:16.5px;margin:18px 0 26px;max-width:520px}
-.cta{display:inline-block;background:var(--red);color:#fff;font-weight:700;padding:14px 28px;border-radius:10px;text-decoration:none;font-size:15.5px;box-shadow:0 8px 30px rgba(230,69,90,.25)}
-.cta:hover{filter:brightness(1.12);transform:translateY(-1px)}
-.note{color:var(--mut);font-size:12.5px;margin-top:10px}
+/* HERO */
+.hero{position:relative;padding:96px 0 64px;text-align:center;overflow:hidden;background:
+  radial-gradient(900px 400px at 50% -10%, rgba(38,230,160,.10), transparent 60%)}
+.hero:before{content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(38,230,160,.045) 1px, transparent 1px),
+                   linear-gradient(90deg, rgba(38,230,160,.045) 1px, transparent 1px);
+  background-size:56px 56px;mask-image:radial-gradient(700px 420px at 50% 20%, #000, transparent 75%)}
+.hero .wrap{position:relative}
+.heroicon{width:74px;height:74px;margin:0 auto 22px;filter:drop-shadow(0 0 26px rgba(38,230,160,.45))}
+.htag{font-size:12px;letter-spacing:4px;text-transform:uppercase;color:var(--acc);font-weight:800}
+h1{font-size:clamp(42px,7vw,80px);font-weight:800;line-height:1.0;letter-spacing:-2px;margin:16px 0 10px}
+.creed{font-size:clamp(19px,2.6vw,27px);font-weight:800;color:var(--acc);letter-spacing:-.3px}
+.hsub{color:var(--mut);font-size:16.5px;margin:18px auto 30px;max-width:560px}
+.ctarow{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.cta{display:inline-block;background:var(--acc);color:#03130c;font-weight:800;padding:15px 32px;border-radius:10px;
+     font-size:15.5px;box-shadow:0 10px 40px rgba(38,230,160,.25);transition:.15s}
+.cta:hover{transform:translateY(-2px)}
+.cta2{display:inline-block;border:1px solid var(--line);font-weight:700;padding:14px 26px;border-radius:10px;
+      font-size:15px;background:rgba(255,255,255,.02)}
+.cta2:hover{border-color:#2c3a52}
+.stats{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:38px}
+.stat{background:rgba(14,19,29,.8);border:1px solid var(--line);border-radius:11px;padding:12px 22px;min-width:130px}
+.stat b{display:block;font-size:21px}
+.stat b.g{color:var(--grn)}
+.stat span{font-size:11px;color:var(--mut);letter-spacing:.8px;text-transform:uppercase}
 
-/* the living sim panel */
-.sim{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
-.hud{display:flex;gap:14px;flex-wrap:wrap;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);font-size:12px;color:var(--mut)}
-.hud b{color:var(--txt);font-weight:700;font-variant-numeric:tabular-nums}
-.chip{background:#171d28;border:1px solid var(--line);border-radius:6px;padding:2px 8px;font-weight:700;color:var(--gold);letter-spacing:.5px}
+/* TICKERS */
+.tickwrap{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg2);
+          overflow:hidden;white-space:nowrap;padding:13px 0}
+.tick{display:inline-block;animation:mq 42s linear infinite}
+.tick span{margin:0 24px;font-size:13.5px;color:var(--mut)}
+.tick .sym{color:var(--txt);font-weight:800}
+.tick .up{color:var(--grn)} .tick .dn{color:var(--red)}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tickwrap.slow .tick{animation-duration:58s}
+.firmtick span{letter-spacing:2px;font-weight:700;color:#7f8ca1;font-size:12.5px}
+.firmtick .mech{color:var(--gold);font-weight:600;letter-spacing:.5px}
+
+/* DEMO */
+.demo{padding:72px 0 30px;text-align:center}
+.browser{background:#0b0f17;border:1px solid #202b3d;border-radius:16px;overflow:hidden;margin-top:34px;text-align:left;
+  box-shadow:0 40px 120px rgba(0,0,0,.55)}
+.chrome{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid #182131;background:#0a0e15}
+.cdots{display:flex;gap:6px}
+.cdots i{width:11px;height:11px;border-radius:50%;display:block}
+.cdots i:nth-child(1){background:#ff5f57}.cdots i:nth-child(2){background:#febc2e}.cdots i:nth-child(3){background:#28c840}
+.urlbar{flex:1;max-width:520px;margin:0 auto;background:#101623;border:1px solid #1d2839;border-radius:7px;
+  font-size:12px;color:#7f8ca1;padding:5px 14px;text-align:center}
+.urlbar b{color:var(--acc)}
+.live{font-size:11px;color:var(--red);font-weight:800;letter-spacing:1px}
+.live i{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:5px;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.hud{display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding:10px 16px;border-bottom:1px solid #182131;font-size:12px;color:var(--mut)}
+.hud b{color:var(--txt);font-variant-numeric:tabular-nums}
+.chip{background:#131a28;border:1px solid #1d2839;border-radius:6px;padding:2px 9px;font-weight:800;color:var(--gold);letter-spacing:1px;font-size:11px}
 .room b{color:var(--grn)}
-canvas{display:block;width:100%;height:340px}
-.simfoot{display:flex;justify-content:space-between;padding:8px 14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--mut)}
-.flash{color:var(--gold);font-weight:700;opacity:0;transition:opacity .4s}
+#simcv{display:block;width:100%;height:410px}
+.demobar{display:flex;justify-content:space-between;padding:9px 16px;border-top:1px solid #182131;font-size:11.5px;color:#66748c}
+.flash{color:var(--gold);font-weight:800;opacity:0;transition:opacity .4s}
 .flash.on{opacity:1}
+.demonote{color:#5d6a80;font-size:12px;margin-top:14px}
 
-/* marquee */
-.marq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);overflow:hidden;white-space:nowrap;padding:11px 0;margin:34px 0 8px;background:rgba(255,255,255,.012)}
-.marq div{display:inline-block;animation:scroll 38s linear infinite;color:var(--mut);font-size:13px;letter-spacing:.4px}
-.marq span{margin:0 26px}
-.marq i{color:var(--gold);font-style:normal}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* TRIO CARDS */
+.trio{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:36px}
+.tcard{background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:24px;text-align:left}
+.tcard svg{width:100%;height:130px;display:block;margin-bottom:18px}
+.tcard h3{font-size:17px;margin-bottom:5px}
+.tcard p{color:var(--mut);font-size:14px}
 
-section{padding:44px 0}
-h2{font-size:26px;font-weight:800;margin-bottom:8px}
-.lead{color:var(--mut);max-width:640px;margin-bottom:26px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;opacity:0;transform:translateY(14px);transition:all .6s ease}
-.card.in{opacity:1;transform:none}
-.card h3{font-size:15.5px;margin-bottom:8px}
-.card p{color:var(--mut);font-size:14px}
-.card:hover{border-color:#2e3848;transform:translateY(-2px)}
+/* STEP PILLS */
+.pills{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:34px}
+.pill{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:22px;display:flex;gap:16px;align-items:center}
+.pill .n{font-size:26px;font-weight:800;color:var(--acc)}
+.pill p{font-size:14.5px;color:var(--mut)} .pill b{color:var(--txt)}
 
-.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;counter-reset:s}
-.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;position:relative;opacity:0;transform:translateY(14px);transition:all .6s ease}
-.step.in{opacity:1;transform:none}
-.step:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;top:16px;right:18px;font-size:26px;font-weight:800;color:#232b39}
-.step h3{font-size:15.5px;margin-bottom:8px}
-.step p{color:var(--mut);font-size:14px}
+/* VS */
+.vs{margin-top:34px;display:grid;gap:10px}
+.vrow{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;gap:10px;
+  background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 20px}
+.vrow .a{color:var(--mut);font-size:14px;text-align:right}
+.vrow .b{font-weight:700;font-size:14.5px}
+.vrow .b b{color:var(--acc)}
+.vrow .arrow{color:var(--acc);font-weight:800;text-align:center}
+@media(max-width:640px){.vrow{grid-template-columns:1fr}.vrow .a{text-align:left}.vrow .arrow{display:none}}
 
-.inter{text-align:center;padding:58px 0}
-.q{font-size:clamp(24px,3.6vw,36px);font-weight:800}
-.ans{height:34px;margin-top:10px;font-size:17px;color:var(--mut);position:relative}
-.ans span{position:absolute;left:0;right:0;opacity:0;transition:opacity .8s}
-.ans span.on{opacity:1}
-.ans b.g{color:var(--grn)} .ans b.r{color:var(--dn)}
-
-.founder{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:30px;max-width:760px;margin:0 auto}
-.founder p{color:var(--mut);font-size:15px}
-.founder b{color:var(--txt)}
-
-.final{text-align:center;padding:64px 0 30px}
-footer{padding:30px 0 46px;color:#5f6877;font-size:12.5px;border-top:1px solid var(--line);margin-top:40px}
-@media (prefers-reduced-motion: reduce){.marq div{animation:none}.dot{animation:none}}
+/* BANDS */
+.band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,#080d15,#070a10);text-align:center;padding:66px 0}
+.band .big{font-size:clamp(26px,4.2vw,42px);font-weight:800;letter-spacing:-.6px}
+.band .big .g{color:var(--acc)}
+.founder{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--acc);
+  border-radius:14px;padding:30px;max-width:760px;margin:0 auto}
+.founder p{color:var(--mut);font-size:15px;margin-top:8px}.founder b{color:var(--txt)}
+details{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:17px 22px;margin-top:12px}
+details summary{cursor:pointer;font-weight:700;font-size:15px}
+details p{color:var(--mut);font-size:14px;margin-top:10px}
+.final{text-align:center;padding:84px 0 50px}
+footer{border-top:1px solid var(--line);padding:28px 0 50px;color:#5b6678;font-size:12.5px}
+footer a{color:#7f8ca1}
+@media (prefers-reduced-motion: reduce){.tick{animation:none}.live i{animation:none}}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <div class="dot"></div><div class="brand">CARRYER</div>
-    <a class="hcta" href="#join">Get early access</a>
-  </header>
 
-  <section class="hero">
-    <div>
-      <div class="tag">The flight simulator for futures prop traders</div>
-      <h1>Evals don't test your strategy.<br/>They test <span class="r">your hands</span>.<br/>Train them <span class="g">before it costs you</span>.</h1>
-      <p class="sub">Carryer deals you real futures sessions you've never seen — dates masked — and enforces
-      real prop-firm evaluation rules live: trailing drawdown that ratchets, daily loss caps, targets,
-      consistency. Blow the sim account, not the reset fee.</p>
-      <a class="cta" href="#join">Join the waitlist</a>
-      <div class="note">Early access — free while in beta.</div>
-    </div>
-    <div class="sim" aria-label="Live demonstration of the Carryer simulator">
-      <div class="hud">
-        <span class="chip" id="daychip">EVAL&nbsp;DAY&nbsp;2</span>
-        <span>⏱ <b id="clock">09:30:00</b></span>
-        <span>Eq <b id="eq">$50,000</b></span>
-        <span>Floor <b id="floor">$48,000</b></span>
-        <span class="room">Room <b id="room">$2,000</b></span>
-        <span>To&nbsp;pass <b id="topass">$3,000</b></span>
-      </div>
-      <canvas id="cv" width="1200" height="680"></canvas>
-      <div class="simfoot">
-        <span>unseen day · date masked · rules enforced live</span>
-        <span class="flash" id="flash"></span>
-      </div>
-    </div>
-  </section>
-</div>
+<nav><div class="wrap navi">
+  <a class="logo" href="#top">
+    <svg viewBox="0 0 96 96" fill="none"><line x1="48" y1="6" x2="48" y2="14" stroke="#26e6a0" stroke-width="4" stroke-linecap="round"/><rect x="42" y="14" width="12" height="18" rx="2.5" fill="#26e6a0"/><line x1="48" y1="32" x2="48" y2="40" stroke="#26e6a0" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="56" r="16" stroke="#26e6a0" stroke-width="5"/><circle cx="48" cy="56" r="3" fill="#26e6a0"/><line x1="8" y1="56" x2="28" y2="56" stroke="#26e6a0" stroke-width="5" stroke-linecap="round"/><line x1="68" y1="56" x2="88" y2="56" stroke="#26e6a0" stroke-width="5" stroke-linecap="round"/></svg>
+    CARRYER
+  </a>
+  <div class="nlinks"><a href="#demo">The Sim</a><a href="#platform">Platform</a><a href="#vs">Why Carryer</a><a href="#faq">FAQ</a></div>
+  <a class="navcta" href="#join">Request access</a>
+</div></nav>
 
-<div class="marq"><div id="mq">
-  <span>the floor <i>ratchets</i> at EOD — just like your firm's</span><span>·</span>
-  <span>random <i>unseen</i> days — a pass is <i>evidence</i>, not practice</span><span>·</span>
-  <span>CVD off <i>raw ticks</i> — for traders who read order flow</span><span>·</span>
-  <span>the journal logs the trades you <i>didn't</i> take</span><span>·</span>
-  <span>size every trade — clipped to your firm's <i>real limits</i></span><span>·</span>
-  <span>blow the attempt → it stays in the archive — <i>the record is the stakes</i></span><span>·</span>
+<!-- HERO -->
+<header class="hero" id="top"><div class="wrap">
+  <svg class="heroicon" viewBox="0 0 96 96" fill="none"><line x1="48" y1="6" x2="48" y2="14" stroke="#26e6a0" stroke-width="4" stroke-linecap="round"/><rect x="42" y="14" width="12" height="18" rx="2.5" fill="#26e6a0"/><line x1="48" y1="32" x2="48" y2="40" stroke="#26e6a0" stroke-width="4" stroke-linecap="round"/><circle cx="48" cy="56" r="16" stroke="#26e6a0" stroke-width="5"/><circle cx="48" cy="56" r="3" fill="#26e6a0"/><line x1="8" y1="56" x2="28" y2="56" stroke="#26e6a0" stroke-width="5" stroke-linecap="round"/><line x1="68" y1="56" x2="88" y2="56" stroke="#26e6a0" stroke-width="5" stroke-linecap="round"/></svg>
+  <div class="htag">The flight simulator for futures eval traders</div>
+  <h1>Master your craft.</h1>
+  <div class="creed">Make success inevitable.</div>
+  <p class="hsub">Unseen sessions. Real firm rules. Infinite reps.<br/>Show up to the real eval already good.</p>
+  <div class="ctarow">
+    <a class="cta" href="#join">Request early access</a>
+    <a class="cta2" href="#demo">▶&nbsp; Watch the sim fly</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b class="g">∞</b><span>eval reps / day</span></div>
+    <div class="stat"><b>$0</b><span>reset fees</span></div>
+    <div class="stat"><b>15+</b><span>firm rule packs</span></div>
+    <div class="stat"><b class="g">100%</b><span>futures</span></div>
+  </div>
+</div></header>
+
+<!-- FUTURES TICKER -->
+<div class="tickwrap mono" aria-hidden="true"><div class="tick" id="tk1">
+  <span><span class="sym">NQ</span> 21,384.25 <span class="up">+0.42%</span></span>
+  <span><span class="sym">ES</span> 6,071.50 <span class="up">+0.28%</span></span>
+  <span><span class="sym">YM</span> 44,912 <span class="dn">−0.11%</span></span>
+  <span><span class="sym">RTY</span> 2,341.10 <span class="up">+0.65%</span></span>
+  <span><span class="sym">CL</span> 71.84 <span class="dn">−0.90%</span></span>
+  <span><span class="sym">GC</span> 2,689.3 <span class="up">+0.35%</span></span>
+  <span><span class="sym">SI</span> 31.42 <span class="up">+0.51%</span></span>
+  <span><span class="sym">NG</span> 3.118 <span class="dn">−1.24%</span></span>
+  <span><span class="sym">ZB</span> 117'22 <span class="up">+0.09%</span></span>
+  <span><span class="sym">6E</span> 1.0842 <span class="dn">−0.05%</span></span>
+  <span><span class="sym">MNQ</span> 21,384.00 <span class="up">+0.42%</span></span>
+  <span><span class="sym">MES</span> 6,071.25 <span class="up">+0.28%</span></span>
 </div></div>
 
-<div class="wrap">
-  <section>
-    <h2>Practice the game you're actually playing.</h2>
-    <p class="lead">Chart replay tools test your strategy. The eval tests something else: your sizing
-    near the floor, your discipline after a stop-out, your math when the target is $900 away and the
-    room is $600. Carryer simulates <em>that</em>.</p>
-    <div class="grid">
-      <div class="card"><h3>🎯 Real eval geometry</h3><p>EOD-trailing floors that ratchet and lock at
-      breakeven, daily loss limits, consistency rules — modeled per firm from researched rule packs,
-      not a generic score counter.</p></div>
-      <div class="card"><h3>🎲 Unseen, masked days</h3><p>The sim deals a random session you've never
-      replayed and hides the date. No hindsight, no cherry-picking, no "I remember this day."</p></div>
-      <div class="card"><h3>📊 Order-flow native</h3><p>CVD candles synced to price, built from raw
-      tick data. Absorption, divergence, delta — the first replay sim built for how you actually read.</p></div>
-      <div class="card"><h3>📓 The record writes itself</h3><p>Every decision logged — entries, exits,
-      and the setups you passed on, with reasons. A per-day image cache orders your screenshots trade
-      by trade. Your journal becomes your edge.</p></div>
+<!-- DEMO -->
+<div class="wrap demo" id="demo">
+  <div class="eyebrow">Watch the sim fly</div>
+  <h2>Not a chart replay. A checkride.</h2>
+  <div class="browser reveal">
+    <div class="chrome">
+      <div class="cdots"><i></i><i></i><i></i></div>
+      <div class="urlbar mono">carryer / simulator — <b>EVAL DAY 2 · UNSEEN · MASKED</b></div>
+      <div class="live mono"><i></i>LIVE REPLAY</div>
     </div>
-  </section>
-
-  <section>
-    <h2>How it works</h2>
-    <div class="steps">
-      <div class="step"><h3>Deal me a day</h3><p>Pick your firm's rule pack. Carryer draws a session
-      you've never seen and masks the date. Your account, floor, and target are live from the first tick.</p></div>
-      <div class="step"><h3>Trade it like it's real</h3><p>Candles form second by second. Size each
-      trade, manage your stop, watch your room to the floor — the same peripheral-vision math the
-      real eval demands.</p></div>
-      <div class="step"><h3>The record grades you</h3><p>Pass or blow, the attempt persists. Win rate,
-      R-multiples, management stats, and the full decision log — so the next attempt starts smarter.</p></div>
+    <div class="hud mono">
+      <span class="chip">LUCID 50K PACK</span>
+      <span>⏱ <b id="clock">09:30:00</b></span>
+      <span>Equity <b id="eq">$50,000</b></span>
+      <span>Floor <b id="floor">$48,000</b></span>
+      <span class="room">Room <b id="room">$2,000</b></span>
+      <span>To pass <b id="topass">$3,000</b></span>
     </div>
-  </section>
-</div>
-
-<section class="inter">
-  <div class="q">Reversal or Continuation?</div>
-  <div class="ans" id="rc">
-    <span class="on">Buyers absorbed at the low → <b class="g">Reversal.</b></span>
-    <span>Sellers still winning the battle → <b class="r">Continuation.</b></span>
-    <span>Wall refreshing on the bid → <b class="g">Reversal.</b></span>
-    <span>Lower lows keep printing → <b class="r">Continuation.</b></span>
+    <canvas id="simcv"></canvas>
+    <div class="demobar mono">
+      <span>CVD off raw ticks · floor ratchets at EOD · decisions logged</span>
+      <span class="flash" id="flash"></span>
+    </div>
   </div>
-  <p style="color:var(--mut);font-size:14px;margin-top:14px">The question every trade comes down to.<br/>Carryer is where you drill the answer — until it's reflex.</p>
-</section>
-
-<div class="wrap">
-  <section>
-    <div class="founder">
-      <h2 style="font-size:20px">Built mid-eval, in public.</h2>
-      <p>Carryer isn't a chart tool built by a software company. It's the training rig a <b>funded-eval
-      futures trader</b> built for his own hands — the trailing floor that stopped him, the sweeps that
-      ran his stops, the divergences he shorted too late. Every feature exists because a real eval
-      charged real money for the lesson. <b>The record is public. The tool is the receipt.</b></p>
-    </div>
-  </section>
-
-  <section class="final" id="join">
-    <h2>Fly the sim before you pay for the checkride.</h2>
-    <p class="lead" style="margin:10px auto 24px">Early access is free while in beta. Futures first. Order-flow native.</p>
-    <a class="cta" href="mailto:alexlions2013@gmail.com?subject=Carryer%20waitlist&body=Put%20me%20on%20the%20waitlist.%20I%20trade%3A%20">Join the waitlist</a>
-  </section>
+  <div class="demonote">Live render of the Carryer engine — synthetic session for demonstration.</div>
 </div>
+
+<!-- FIRM PACKS TICKER -->
+<div class="tickwrap slow firmtick mono" aria-hidden="true"><div class="tick" id="tk2">
+  <span>APEX <span class="mech">EOD TRAIL</span></span><span>·</span>
+  <span>TOPSTEP <span class="mech">EOD TRAIL + DLL</span></span><span>·</span>
+  <span>LUCID <span class="mech">LOCKS AT BE</span></span><span>·</span>
+  <span>TRADEIFY <span class="mech">TRAIL LOCK +$100</span></span><span>·</span>
+  <span>MY FUNDED FUTURES <span class="mech">EOD · INTRADAY · STATIC</span></span><span>·</span>
+  <span>CONSISTENCY <span class="mech">BOTH BASES MODELED</span></span><span>·</span>
+</div></div>
+
+<!-- PLATFORM TRIO -->
+<div class="wrap" id="platform"><section style="text-align:center">
+  <div class="eyebrow">One cockpit. Three layers.</div>
+  <h2>Simulator. Eval. Record.</h2>
+  <div class="trio">
+    <div class="tcard reveal">
+      <svg viewBox="0 0 300 130">
+        <g stroke-linecap="round">
+        <line x1="30" y1="28" x2="30" y2="86" stroke="#26e6a0" stroke-width="3"/><rect x="22" y="40" width="16" height="34" rx="2" fill="#26e6a0"/>
+        <line x1="70" y1="20" x2="70" y2="76" stroke="#ff4d5e" stroke-width="3"/><rect x="62" y="28" width="16" height="30" rx="2" fill="#ff4d5e"/>
+        <line x1="110" y1="34" x2="110" y2="92" stroke="#26e6a0" stroke-width="3"/><rect x="102" y="48" width="16" height="32" rx="2" fill="#26e6a0"/>
+        <line x1="150" y1="14" x2="150" y2="72" stroke="#26e6a0" stroke-width="3"/><rect x="142" y="22" width="16" height="36" rx="2" fill="#26e6a0"/>
+        <line x1="190" y1="26" x2="190" y2="84" stroke="#ff4d5e" stroke-width="3"/><rect x="182" y="36" width="16" height="30" rx="2" fill="#ff4d5e"/>
+        <line x1="230" y1="10" x2="230" y2="66" stroke="#26e6a0" stroke-width="3"/><rect x="222" y="16" width="16" height="34" rx="2" fill="#26e6a0"/>
+        <line x1="270" y1="20" x2="270" y2="60" stroke="#26e6a0" stroke-width="3"/><rect x="262" y="24" width="16" height="26" rx="2" fill="#26e6a0"/>
+        </g>
+        <g fill="#b39ddb" opacity=".85">
+        <rect x="24" y="108" width="12" height="12" rx="2"/><rect x="64" y="112" width="12" height="8" rx="2"/>
+        <rect x="104" y="104" width="12" height="16" rx="2"/><rect x="144" y="100" width="12" height="20" rx="2"/>
+        <rect x="184" y="110" width="12" height="10" rx="2"/><rect x="224" y="98" width="12" height="22" rx="2"/>
+        <rect x="264" y="102" width="12" height="18" rx="2"/>
+        </g>
+      </svg>
+      <h3>The Simulator</h3>
+      <p>Tick-level futures replay. CVD native. 15s → 4h.</p>
+    </div>
+    <div class="tcard reveal">
+      <svg viewBox="0 0 300 130">
+        <polyline points="16,110 70,110 70,88 130,88 130,66 200,66 200,50 284,50" fill="none" stroke="#f2c94c" stroke-width="3.5" stroke-dasharray="9 6"/>
+        <path d="M16,96 C60,88 90,60 130,52 C170,44 200,40 284,20" fill="none" stroke="#26e6a0" stroke-width="3.5"/>
+        <circle cx="284" cy="20" r="5" fill="#26e6a0"/>
+        <text x="20" y="126" fill="#f2c94c" font-size="11" font-family="monospace" font-weight="700">FLOOR — ratchets at EOD</text>
+        <text x="196" y="14" fill="#26e6a0" font-size="11" font-family="monospace" font-weight="700">EQUITY</text>
+      </svg>
+      <h3>The Eval Layer</h3>
+      <p>Trailing floors, daily caps, consistency — enforced live.</p>
+    </div>
+    <div class="tcard reveal">
+      <svg viewBox="0 0 300 130">
+        <g>
+        <rect x="16"  y="16" width="38" height="26" rx="5" fill="#153b2f"/><rect x="62"  y="16" width="38" height="26" rx="5" fill="#3b1a22"/>
+        <rect x="108" y="16" width="38" height="26" rx="5" fill="#153b2f"/><rect x="154" y="16" width="38" height="26" rx="5" fill="#153b2f"/>
+        <rect x="200" y="16" width="38" height="26" rx="5" fill="#101826"/><rect x="246" y="16" width="38" height="26" rx="5" fill="#153b2f"/>
+        <rect x="16"  y="50" width="38" height="26" rx="5" fill="#3b1a22"/><rect x="62"  y="50" width="38" height="26" rx="5" fill="#153b2f"/>
+        <rect x="108" y="50" width="38" height="26" rx="5" fill="#4a3a12"/><rect x="154" y="50" width="38" height="26" rx="5" fill="#153b2f"/>
+        <rect x="200" y="50" width="38" height="26" rx="5" fill="#153b2f"/><rect x="246" y="50" width="38" height="26" rx="5" fill="#101826"/>
+        <rect x="16"  y="84" width="38" height="26" rx="5" fill="#153b2f"/><rect x="62"  y="84" width="38" height="26" rx="5" fill="#101826"/>
+        <rect x="108" y="84" width="38" height="26" rx="5" fill="#153b2f"/><rect x="154" y="84" width="38" height="26" rx="5" fill="#3b1a22"/>
+        <rect x="200" y="84" width="38" height="26" rx="5" fill="#153b2f"/><rect x="246" y="84" width="38" height="26" rx="5" fill="#153b2f"/>
+        </g>
+        <text x="119" y="68" fill="#f2c94c" font-size="13" font-family="monospace" font-weight="800">★</text>
+        <text x="16" y="126" fill="#66748c" font-size="11" font-family="monospace">every day · every decision · every screenshot</text>
+      </svg>
+      <h3>The Record</h3>
+      <p>Every decision logged. Screenshots file themselves.</p>
+    </div>
+  </div>
+</section></div>
+
+<!-- STEPS -->
+<div class="wrap"><section style="text-align:center;padding-top:10px">
+  <div class="eyebrow">The sortie</div>
+  <h2>Three moves. Then again tomorrow.</h2>
+  <div class="pills">
+    <div class="pill reveal"><div class="n">01</div><p><b>Deal me a day.</b><br/>Unseen session. Date masked.</p></div>
+    <div class="pill reveal"><div class="n">02</div><p><b>Fly it like it's real.</b><br/>Size. Stop. Room to the floor.</p></div>
+    <div class="pill reveal"><div class="n">03</div><p><b>Get graded.</b><br/>Pass or blow — the attempt persists.</p></div>
+  </div>
+</section></div>
+
+<!-- VS -->
+<div class="wrap" id="vs"><section style="text-align:center;padding-top:10px">
+  <div class="eyebrow">Why Carryer</div>
+  <h2>Everything else is one of three things.</h2>
+  <div class="vs">
+    <div class="vrow reveal"><div class="a">Replay charts — you pick the day</div><div class="arrow">→</div><div class="b"><b>Unseen days.</b> A pass is evidence.</div></div>
+    <div class="vrow reveal"><div class="a">Journal "challenge modes" — graded after</div><div class="arrow">→</div><div class="b"><b>Rules enforced live</b>, mid-trade.</div></div>
+    <div class="vrow reveal"><div class="a">Order-flow terminals — no eval</div><div class="arrow">→</div><div class="b"><b>CVD fused</b> to the eval + the record.</div></div>
+    <div class="vrow reveal"><div class="a">The real eval — one shot a day</div><div class="arrow">→</div><div class="b"><b>Infinite reps.</b> $0 resets.</div></div>
+  </div>
+</section></div>
+
+<!-- CREED -->
+<div class="band"><div class="wrap">
+  <div class="big">Fly the sim. Pass the checkride.<br/><span class="g">Make success inevitable.</span></div>
+</div></div>
+
+<!-- FOUNDER -->
+<div class="wrap"><section>
+  <div class="founder reveal">
+    <div class="eyebrow">Built in the cockpit</div>
+    <p><b>Carryer is built mid-eval, in public, by a funded-eval futures trader</b> — every feature is a lesson
+    a real eval charged real money for. <b>The record is public. The tool is the receipt.</b></p>
+  </div>
+</section></div>
+
+<!-- FAQ -->
+<div class="wrap" id="faq"><section style="padding-top:0">
+  <div class="eyebrow">Straight answers</div>
+  <h2>FAQ</h2>
+  <details class="reveal"><summary>Is Carryer a prop firm?</summary>
+    <p>No — a training simulator. We model the published rule mechanics of the major futures firms. Not affiliated with any of them.</p></details>
+  <details class="reveal"><summary>Do sim results transfer?</summary>
+    <p>The sim transfers <em>procedure</em> — floor math, sizing, entries — until it's reflex. Live transfers <em>pressure</em>. We promise the first, honestly.</p></details>
+  <details class="reveal"><summary>Why futures only?</summary>
+    <p>Centralized exchange, clean ticks, real order flow — and the eval economy futures traders live in. Others added futures. Carryer was born here.</p></details>
+  <details class="reveal"><summary>When can I fly?</summary>
+    <p>Early access rolls out from the waitlist — free while in beta. The public web platform is in active development.</p></details>
+</section></div>
+
+<!-- FINAL CTA -->
+<div class="wrap"><section class="final" id="join">
+  <div class="htag" style="color:var(--acc)">Cleared for departure</div>
+  <h2 style="margin:14px 0 4px">Master your craft.</h2>
+  <div class="creed" style="margin-bottom:24px">Make success inevitable.</div>
+  <a class="cta" href="mailto:alex@carryersim.com?subject=Carryer%20early%20access&body=Put%20me%20on%20the%20waitlist.%20I%20trade%3A%20">Request early access</a>
+</section></div>
 
 <footer><div class="wrap">
-  <div>© 2026 Carryer. Simulated trading — nothing here is financial advice. Futures trading involves substantial risk of loss. Not affiliated with or endorsed by any prop firm.</div>
+  © 2026 Carryer — the flight simulator for futures eval traders. Contact: <a href="mailto:alex@carryersim.com">alex@carryersim.com</a><br/>
+  Simulated trading; nothing here is financial advice. Futures trading involves substantial risk of loss.
+  Not affiliated with, sponsored by, or endorsed by any proprietary trading firm or exchange.
 </div></footer>
 
 <script>
 "use strict";
-/* ---------- the living sim: candles + CVD + trades + fibs + eval HUD ---------- */
-const cv = document.getElementById("cv"), ctx = cv.getContext("2d");
+/* ---- live sim render (the "video") ---- */
+const cv = document.getElementById("simcv"), ctx = cv.getContext("2d");
 const HUD = {clock:document.getElementById("clock"), eq:document.getElementById("eq"),
              floor:document.getElementById("floor"), room:document.getElementById("room"),
-             topass:document.getElementById("topass"), day:document.getElementById("daychip"),
-             flash:document.getElementById("flash")};
+             topass:document.getElementById("topass"), flash:document.getElementById("flash")};
 const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const N = 78, TICKS = 6, EOD = 34;
-const S = {bars:[], cvd:[], px:20000, mom:0.6, regLeft:30, dir:1, tick:0,
+const N = 92, TICKS = 6, EOD = 36;
+const S = {bars:[], cvd:[], px:21400, mom:.6, regLeft:30, dir:1, tick:0,
            real:50000, open:0, floor:48000, day:2, mins:0, pos:null, sinceTrade:6, fib:null};
-
-function nb(o){return {o:o, h:o, l:o, c:o};}
-function step(){
-  if(--S.regLeft <= 0){ S.dir = (Math.random() < .45 ? -S.dir : S.dir); S.mom = (0.35 + Math.random()*0.9); S.regLeft = 14 + Math.random()*26 | 0; }
-  const sweep = Math.random() < 0.004;
-  let dpx = S.dir*S.mom + (Math.random()-0.5)*3.2 + (sweep ? -S.dir*7 : 0);
-  S.px = Math.max(1000, S.px + dpx);
-  const b = S.bars[S.bars.length-1], c = S.cvd[S.cvd.length-1];
-  b.c = S.px; b.h = Math.max(b.h, S.px); b.l = Math.min(b.l, S.px);
-  const delta = dpx*14 + (Math.random()-0.5)*22;
-  c.c += delta; c.h = Math.max(c.h, c.c); c.l = Math.min(c.l, c.c);
-
-  if(S.pos){ S.open = (S.px - S.pos.e) * S.pos.d * 8; }
-  if(++S.tick >= TICKS) closeBar();
+let W=0, H=0, DPR=1;
+function resize(){
+  DPR = Math.min(devicePixelRatio||1, 2);
+  W = cv.offsetWidth || 1100; H = cv.offsetHeight || 410;
+  cv.width = W*DPR; cv.height = H*DPR; ctx.setTransform(DPR,0,0,DPR,0,0);
 }
-function closeBar(){
-  S.tick = 0; S.mins++;
-  const last = S.bars[S.bars.length-1];
-  if(S.pos){
-    S.pos.age++;
-    if(S.pos.age % 3 === 0){
-      const t = S.pos.d>0 ? Math.max(S.pos.s, S.px-26) : Math.min(S.pos.s, S.px+26);
-      S.pos.s = S.pos.s + (t - S.pos.s)*0.5;
-    }
-    const hit = S.pos.d>0 ? last.l <= S.pos.s : last.h >= S.pos.s;
-    if(hit || S.pos.age > 26){
-      const pnl = ((hit ? S.pos.s : S.px) - S.pos.e) * S.pos.d * 8;
-      S.real += pnl; S.open = 0;
-      say((pnl>=0?"banked +$":"stopped −$") + Math.abs(pnl).toFixed(0), pnl>=0);
-      S.pos = null; S.sinceTrade = 0;
-    }
-  } else if(++S.sinceTrade > 10 && Math.random() < .3){
-    S.pos = {d:S.dir, e:S.px, s:S.px - S.dir*30, age:0};
-    say(S.dir>0 ? "long — stop below the sweep" : "short — stop above the sweep", null);
-  }
-  if(Math.random() < .06 && S.bars.length > 30){
-    const seg = S.bars.slice(-26);
-    const hi = Math.max(...seg.map(b=>b.h)), lo = Math.min(...seg.map(b=>b.l));
-    if(hi-lo > 30) S.fib = {hi:hi, lo:lo, life:90};
-  }
-  if(S.mins % EOD === 0){
-    const nf = Math.min(50000, Math.max(S.floor, S.real - 2000));
-    if(nf > S.floor + 1){ S.floor = nf; say("🌙 settled — floor ratchets to $" + fmt(nf), true); }
-    else say("🌙 settled", null);
-    S.day++; if(S.day > 9){ reset(); return; }
-    HUD.day.textContent = "EVAL DAY " + S.day;
-  }
-  S.bars.push(nb(S.px)); if(S.bars.length > N) S.bars.shift();
-  const pc = S.cvd[S.cvd.length-1].c; S.cvd.push({o:pc,h:pc,l:pc,c:pc}); if(S.cvd.length > N) S.cvd.shift();
-  if(S.fib && --S.fib.life <= 0) S.fib = null;
+addEventListener("resize", resize);
+function nb(o){ return {o:o,h:o,l:o,c:o}; }
+function say(m,g){
+  HUD.flash.textContent = m;
+  HUD.flash.style.color = g===null ? "#8f9aad" : (g ? "#26e6a0" : "#ff4d5e");
+  HUD.flash.classList.add("on"); clearTimeout(say.t);
+  say.t = setTimeout(()=>HUD.flash.classList.remove("on"), 2600);
 }
+function fmt(v){ return Math.round(v).toLocaleString("en-US"); }
 function reset(){
   S.bars=[nb(S.px)]; S.cvd=[{o:0,h:0,l:0,c:0}]; S.real=50000; S.open=0; S.floor=48000;
-  S.day=1; S.mins=0; S.pos=null; S.fib=null; HUD.day.textContent="EVAL DAY 1";
+  S.day=1; S.mins=0; S.pos=null; S.fib=null;
   say("new attempt — fresh unseen day", true);
 }
-function say(m, good){
-  HUD.flash.textContent = m; HUD.flash.style.color = good===null ? "#8b95a7" : (good ? "#26a69a" : "#ef5350");
-  HUD.flash.classList.add("on"); clearTimeout(say.t); say.t = setTimeout(()=>HUD.flash.classList.remove("on"), 2600);
+function step(){
+  if(--S.regLeft<=0){ S.dir=(Math.random()<.45?-S.dir:S.dir); S.mom=.35+Math.random()*.9; S.regLeft=14+Math.random()*26|0; }
+  const sweep = Math.random()<.004;
+  const dpx = S.dir*S.mom + (Math.random()-.5)*3.2 + (sweep?-S.dir*7:0);
+  S.px = Math.max(1000, S.px+dpx);
+  const b=S.bars[S.bars.length-1], c=S.cvd[S.cvd.length-1];
+  b.c=S.px; b.h=Math.max(b.h,S.px); b.l=Math.min(b.l,S.px);
+  const d = dpx*14 + (Math.random()-.5)*22;
+  c.c+=d; c.h=Math.max(c.h,c.c); c.l=Math.min(c.l,c.c);
+  if(S.pos) S.open=(S.px-S.pos.e)*S.pos.d*8;
+  if(++S.tick>=TICKS) closeBar();
 }
-function fmt(v){return v.toLocaleString("en-US", {maximumFractionDigits:0});}
-
-function draw(){
-  const W = cv.width, H = cv.height, phH = H*0.66, cvY = H*0.70, cvH = H*0.27;
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle = "#1a2029"; ctx.lineWidth = 1;
-  for(let i=1;i<5;i++){ ctx.beginPath(); ctx.moveTo(0, phH*i/5); ctx.lineTo(W, phH*i/5); ctx.stroke(); }
-  const bars = S.bars, n = bars.length, bw = W/N, cw = Math.max(2, bw*0.62);
-  let hi = -1e9, lo = 1e9;
-  for(const b of bars){ hi = Math.max(hi, b.h); lo = Math.min(lo, b.l); }
-  if(S.fib){ hi = Math.max(hi, S.fib.hi); lo = Math.min(lo, S.fib.lo); }
-  const pad = (hi-lo)*0.08 + 1; hi += pad; lo -= pad;
-  const y = p => phH * (1 - (p - lo)/(hi - lo));
-  if(S.fib){
-    const F = S.fib, cols = {0:"#787b86",0.236:"#f23645",0.382:"#ff9800",0.5:"#4caf50",0.618:"#089981",0.786:"#00bcd4",1:"#787b86"};
-    ctx.font = "11px system-ui"; ctx.textAlign = "left";
-    for(const lv of [0,.236,.382,.5,.618,.786,1]){
-      const p = F.lo + (F.hi-F.lo)*lv, yy = y(p);
-      ctx.strokeStyle = cols[lv]; ctx.globalAlpha = Math.min(1, F.life/25)*0.85;
-      ctx.setLineDash(lv===0||lv===1 ? [] : [4,4]);
-      ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(W-46, yy); ctx.stroke();
-      ctx.fillStyle = cols[lv]; ctx.fillText(String(lv).replace("0.","."), W-42, yy+3.5);
+function closeBar(){
+  S.tick=0; S.mins++;
+  const last=S.bars[S.bars.length-1];
+  if(S.pos){
+    S.pos.age++;
+    if(S.pos.age%3===0){
+      const t = S.pos.d>0 ? Math.max(S.pos.s,S.px-26) : Math.min(S.pos.s,S.px+26);
+      S.pos.s += (t-S.pos.s)*.5;
     }
-    ctx.setLineDash([]); ctx.globalAlpha = 1;
+    const hit = S.pos.d>0 ? last.l<=S.pos.s : last.h>=S.pos.s;
+    if(hit || S.pos.age>26){
+      const pnl=((hit?S.pos.s:S.px)-S.pos.e)*S.pos.d*8;
+      S.real+=pnl; S.open=0;
+      say((pnl>=0?"banked +$":"stopped −$")+Math.abs(Math.round(pnl)), pnl>=0);
+      S.pos=null; S.sinceTrade=0;
+    }
+  } else if(++S.sinceTrade>10 && Math.random()<.3){
+    S.pos={d:S.dir, e:S.px, s:S.px-S.dir*30, age:0};
+    say(S.dir>0?"long — stop below the sweep":"short — stop above the sweep", null);
+  }
+  if(Math.random()<.06 && S.bars.length>30){
+    const seg=S.bars.slice(-26);
+    const hi=Math.max(...seg.map(b=>b.h)), lo=Math.min(...seg.map(b=>b.l));
+    if(hi-lo>30) S.fib={hi:hi, lo:lo, life:90};
+  }
+  if(S.mins%EOD===0){
+    const nf=Math.min(50000, Math.max(S.floor, S.real-2000));
+    if(nf>S.floor+1){ S.floor=nf; say("🌙 settled — floor ratchets to $"+fmt(nf), true); }
+    else say("🌙 settled", null);
+    S.day++; if(S.day>9){ reset(); return; }
+  }
+  S.bars.push(nb(S.px)); if(S.bars.length>N) S.bars.shift();
+  const pc=S.cvd[S.cvd.length-1].c;
+  S.cvd.push({o:pc,h:pc,l:pc,c:pc}); if(S.cvd.length>N) S.cvd.shift();
+  if(S.fib && --S.fib.life<=0) S.fib=null;
+}
+function draw(){
+  const phH=H*.66, cvY=H*.70, cvH=H*.27;
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle="#141c2a"; ctx.lineWidth=1;
+  for(let i=1;i<5;i++){ ctx.beginPath(); ctx.moveTo(0,phH*i/5); ctx.lineTo(W,phH*i/5); ctx.stroke(); }
+  const bars=S.bars, n=bars.length, bw=W/N, cw=Math.max(2,bw*.62);
+  let hi=-1e9, lo=1e9;
+  for(const b of bars){ hi=Math.max(hi,b.h); lo=Math.min(lo,b.l); }
+  if(S.fib){ hi=Math.max(hi,S.fib.hi); lo=Math.min(lo,S.fib.lo); }
+  const pad=(hi-lo)*.08+1; hi+=pad; lo-=pad;
+  const y=p=>phH*(1-(p-lo)/(hi-lo));
+  if(S.fib){
+    const F=S.fib, cols={0:"#787b86",0.236:"#f23645",0.382:"#ff9800",0.5:"#4caf50",0.618:"#089981",0.786:"#00bcd4",1:"#787b86"};
+    ctx.font="11px ui-monospace,Consolas,monospace"; ctx.textAlign="left";
+    for(const lv of [0,.236,.382,.5,.618,.786,1]){
+      const p=F.lo+(F.hi-F.lo)*lv, yy=y(p);
+      ctx.strokeStyle=cols[lv]; ctx.globalAlpha=Math.min(1,F.life/25)*.85;
+      ctx.setLineDash(lv===0||lv===1?[]:[4,4]);
+      ctx.beginPath(); ctx.moveTo(0,yy); ctx.lineTo(W-46,yy); ctx.stroke();
+      ctx.fillStyle=cols[lv]; ctx.fillText(String(lv).replace("0.","."), W-42, yy+3.5);
+    }
+    ctx.setLineDash([]); ctx.globalAlpha=1;
   }
   for(let i=0;i<n;i++){
-    const b = bars[i], x = (N-n+i)*bw + bw/2, up = b.c >= b.o;
-    ctx.strokeStyle = ctx.fillStyle = up ? "#26a69a" : "#ef5350";
-    ctx.beginPath(); ctx.moveTo(x, y(b.h)); ctx.lineTo(x, y(b.l)); ctx.stroke();
-    const t = y(Math.max(b.o,b.c)), h2 = Math.max(1.5, Math.abs(y(b.o)-y(b.c)));
-    ctx.fillRect(x-cw/2, t, cw, h2);
+    const b=bars[i], x=(N-n+i)*bw+bw/2, up=b.c>=b.o;
+    ctx.strokeStyle=ctx.fillStyle= up?"#26e6a0":"#ff4d5e";
+    ctx.beginPath(); ctx.moveTo(x,y(b.h)); ctx.lineTo(x,y(b.l)); ctx.stroke();
+    const t=y(Math.max(b.o,b.c)), h2=Math.max(1.5,Math.abs(y(b.o)-y(b.c)));
+    ctx.fillRect(x-cw/2,t,cw,h2);
   }
   if(S.pos){
-    const xe = (N - 1)*bw;
     ctx.setLineDash([5,4]);
-    ctx.strokeStyle = "#26ff7a"; ctx.beginPath(); ctx.moveTo(xe-260, y(S.pos.e)); ctx.lineTo(W, y(S.pos.e)); ctx.stroke();
-    ctx.strokeStyle = "#ff4d4d"; ctx.beginPath(); ctx.moveTo(xe-260, y(S.pos.s)); ctx.lineTo(W, y(S.pos.s)); ctx.stroke();
+    ctx.strokeStyle="#26ff7a"; ctx.beginPath(); ctx.moveTo(W-320,y(S.pos.e)); ctx.lineTo(W,y(S.pos.e)); ctx.stroke();
+    ctx.strokeStyle="#ff4d4d"; ctx.beginPath(); ctx.moveTo(W-320,y(S.pos.s)); ctx.lineTo(W,y(S.pos.s)); ctx.stroke();
     ctx.setLineDash([]);
-    ctx.fillStyle = S.pos.d>0 ? "#26a69a" : "#ef5350"; ctx.font = "bold 12px system-ui"; ctx.textAlign = "right";
-    ctx.fillText(S.pos.d>0 ? "▲ LONG" : "▼ SHORT", W-8, y(S.pos.e) - 6);
+    ctx.fillStyle=S.pos.d>0?"#26e6a0":"#ff4d5e";
+    ctx.font="800 12px ui-monospace,Consolas,monospace"; ctx.textAlign="right";
+    ctx.fillText(S.pos.d>0?"▲ LONG":"▼ SHORT", W-8, y(S.pos.e)-6);
   }
-  ctx.strokeStyle = "#1a2029"; ctx.strokeRect(0, cvY, W, cvH);
-  ctx.fillStyle = "#8b93a1"; ctx.font = "10.5px system-ui"; ctx.textAlign = "left"; ctx.fillText("CVD — cumulative delta (raw ticks)", 8, cvY + 14);
-  const cb = S.cvd; let chi = -1e18, clo = 1e18;
-  for(const c of cb){ chi = Math.max(chi, c.h); clo = Math.min(clo, c.l); }
-  const cpad = (chi-clo)*0.15 + 1; chi += cpad; clo -= cpad;
-  const yc = v => cvY + cvH * (1 - (v-clo)/(chi-clo));
+  ctx.strokeStyle="#141c2a"; ctx.strokeRect(0,cvY,W,cvH);
+  ctx.fillStyle="#66748c"; ctx.font="10.5px ui-monospace,Consolas,monospace"; ctx.textAlign="left";
+  ctx.fillText("CVD — cumulative delta (raw ticks)", 8, cvY+14);
+  const cb=S.cvd; let chi=-1e18, clo=1e18;
+  for(const c of cb){ chi=Math.max(chi,c.h); clo=Math.min(clo,c.l); }
+  const cpad=(chi-clo)*.15+1; chi+=cpad; clo-=cpad;
+  const yc=v=>cvY+cvH*(1-(v-clo)/(chi-clo));
   for(let i=0;i<cb.length;i++){
-    const c = cb[i], x = (N-cb.length+i)*bw + bw/2, up = c.c >= c.o;
-    ctx.strokeStyle = ctx.fillStyle = up ? "#b39ddb" : "#7e57c2";
-    ctx.beginPath(); ctx.moveTo(x, yc(c.h)); ctx.lineTo(x, yc(c.l)); ctx.stroke();
-    const t = yc(Math.max(c.o,c.c)), h2 = Math.max(1.2, Math.abs(yc(c.o)-yc(c.c)));
-    ctx.fillRect(x-cw/2, t, cw, h2);
+    const c=cb[i], x=(N-cb.length+i)*bw+bw/2, up=c.c>=c.o;
+    ctx.strokeStyle=ctx.fillStyle= up?"#b39ddb":"#7e57c2";
+    ctx.beginPath(); ctx.moveTo(x,yc(c.h)); ctx.lineTo(x,yc(c.l)); ctx.stroke();
+    const t=yc(Math.max(c.o,c.c)), h2=Math.max(1.2,Math.abs(yc(c.o)-yc(c.c)));
+    ctx.fillRect(x-cw/2,t,cw,h2);
   }
-  const eq = S.real + S.open, room = eq - S.floor;
-  HUD.eq.textContent = "$" + fmt(eq);
-  HUD.floor.textContent = "$" + fmt(S.floor);
-  HUD.room.textContent = "$" + fmt(room);
-  HUD.room.style.color = room < 900 ? "#ef5350" : "#26a69a";
-  HUD.topass.textContent = "$" + fmt(Math.max(0, 53000 - eq));
-  const mm = (9*60+30) + (S.mins % EOD), ss = (S.tick*10) % 60;
-  HUD.clock.textContent = String(Math.floor(mm/60)).padStart(2,"0") + ":" + String(mm%60).padStart(2,"0") + ":" + String(ss).padStart(2,"0");
+  const eq=S.real+S.open, room=eq-S.floor;
+  HUD.eq.textContent="$"+fmt(eq);
+  HUD.floor.textContent="$"+fmt(S.floor);
+  HUD.room.textContent="$"+fmt(room);
+  HUD.room.style.color = room<900 ? "#ff4d5e" : "#26e6a0";
+  HUD.topass.textContent="$"+fmt(Math.max(0,53000-eq));
+  const mm=(9*60+30)+(S.mins%EOD), ss=(S.tick*10)%60;
+  HUD.clock.textContent=String(Math.floor(mm/60)).padStart(2,"0")+":"+String(mm%60).padStart(2,"0")+":"+String(ss).padStart(2,"0");
 }
-reset(); S.day = 2; HUD.day.textContent = "EVAL DAY 2";
-for(let i=0;i<N*TICKS*0.8;i++) step();
+resize(); reset(); S.day=2;
+for(let i=0;i<N*TICKS*.8;i++) step();
 if(RM){ draw(); } else { setInterval(()=>{ step(); draw(); }, 80); }
 
-const mq = document.getElementById("mq"); mq.innerHTML += mq.innerHTML;
-
-const rc = [...document.querySelectorAll("#rc span")]; let ri = 0;
-if(!RM) setInterval(()=>{ rc[ri].classList.remove("on"); ri = (ri+1)%rc.length; rc[ri].classList.add("on"); }, 3400);
-
-const io = new IntersectionObserver(es => es.forEach(e => { if(e.isIntersecting) e.target.classList.add("in"); }), {threshold:.15});
-document.querySelectorAll(".card,.step").forEach(el => io.observe(el));
+for(const id of ["tk1","tk2"]){ const el=document.getElementById(id); el.innerHTML += el.innerHTML; }
+const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add("in"); }),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
 </script>
 </body>
 </html>
