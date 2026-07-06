@@ -211,7 +211,7 @@ footer a{color:#7f8ca1}
 <div class="tickwrap slow firmtick mono" aria-hidden="true"><div class="tick" id="tk2">
   <span>APEX <span class="mech">EOD TRAIL</span></span><span>·</span>
   <span>TOPSTEP <span class="mech">EOD TRAIL + DLL</span></span><span>·</span>
-  <span>LUCID <span class="mech">LOCKS AT BE</span></span><span>·</span>
+  <span>LUCID <span class="mech">UNCAPPED EOD TRAIL</span></span><span>·</span>
   <span>TRADEIFY <span class="mech">TRAIL LOCK +$100</span></span><span>·</span>
   <span>MY FUNDED FUTURES <span class="mech">EOD · INTRADAY · STATIC</span></span><span>·</span>
   <span>CONSISTENCY <span class="mech">BOTH BASES MODELED</span></span><span>·</span>
@@ -410,7 +410,7 @@ function closeBar(){
     if(hi-lo>30) S.fib={hi:hi, lo:lo, life:90};
   }
   if(S.mins%EOD===0){
-    const nf=Math.min(50000, Math.max(S.floor, S.real-2000));
+    const nf=Math.max(S.floor, S.real-2000);
     if(nf>S.floor+1){ S.floor=nf; say("🌙 settled — floor ratchets to $"+fmt(nf), true); }
     else say("🌙 settled", null);
     S.day++; if(S.day>9){ reset(); return; }
